@@ -16,21 +16,28 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution. */
 
-precision lowp float;
+#version 300 es
+
+precision mediump int;
+precision mediump float;
 
 uniform vec4 col;
 
 uniform int texmode;
 uniform sampler2D texmap;
 
-varying vec2 vtc;
+in vec2 vtc;
+
+layout(location=0) out vec4 oc;
 
 void main(void)
 {
-	gl_FragColor=col;
+	oc=col;
 
-	if(texmode==1)
-		gl_FragColor*=texture2D(texmap,vtc);
+	switch(texmode)
+	{
+		case 1: oc*=texture(texmap,vtc);
+	}
 
-	if(gl_FragColor.a==0.0) discard;
+	if(oc.a==0.0) discard;
 }

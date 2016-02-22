@@ -25,8 +25,9 @@ void init(void)
 	if(init_quad())
 	{
 		mat4 proj, view;
-		persp(proj,75.0f,asp(),1.5f,3.0f);
-		look(view,v3(0.0f,-2.0f,1.0f),v0());
+
+		persp(proj,75.0f,asp(),3.0f,6.0f);
+		look(view,v3(0.0f,-4.0f,2.0f),v0());
 		mult(pview,proj,view);
 
 		update_vbo();
@@ -49,6 +50,7 @@ void loop(void)
 void done(void)
 {
 	done_quad();
+
 	done_vbo();
 	done_basic();
 }

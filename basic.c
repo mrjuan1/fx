@@ -24,7 +24,7 @@ byte _basic_init=0;
 
 unint _basic_p=0;
 struct {
-	int pview, pos, tc;
+	int pview;
 	int col, texmode, texmap;
 } _basic_pv;
 
@@ -40,8 +40,6 @@ byte init_basic(void)
 			glUseProgram(_basic_p);
 
 			_basic_pv.pview=glGetUniformLocation(_basic_p,"pview");
-			_basic_pv.pos=glGetAttribLocation(_basic_p,"pos");
-			_basic_pv.tc=glGetAttribLocation(_basic_p,"tc");
 
 			_basic_pv.col=glGetUniformLocation(_basic_p,"col");
 			_basic_pv.texmode=glGetUniformLocation(_basic_p,"texmode");
@@ -49,8 +47,8 @@ byte init_basic(void)
 
 			idmat(mat);
 			send_pview(mat);
-			glEnableVertexAttribArray(_basic_pv.pos);
-			glEnableVertexAttribArray(_basic_pv.tc);
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
 
 			send_col(v1());
 			texmode(0);
@@ -85,8 +83,8 @@ void send_pview(const mat4 mat)
 
 void send_attribs(void)
 {
-	glVertexAttribPointer(_basic_pv.pos,3,GL_FLOAT,GL_FALSE,stride,NULL);
-	glVertexAttribPointer(_basic_pv.tc,2,GL_FLOAT,GL_FALSE,stride,_basic_offset);
+	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,stride,NULL);
+	glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,stride,_basic_offset);
 }
 
 void send_col(vec4 col)

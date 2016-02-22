@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 
 #include <signal.h>
 #include "SDL.h"
-#include <GLES2/gl2.h>
+#include <GLES3/gl3.h>
 #include <time.h>
 
 int _sw=0, _sh=0;
@@ -48,7 +48,7 @@ int main(void)
 
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_ES);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,24);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,8);

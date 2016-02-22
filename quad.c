@@ -25,10 +25,10 @@ byte init_quad(void)
 	if(!_quad_init && init_vbo())
 	{
 		const float vdata[20]={
-			-0.5f,-0.5f,0.0f,0.0f,1.0f,
-			 0.5f,-0.5f,0.0f,1.0f,1.0f,
-			 0.5f, 0.5f,0.0f,1.0f,0.0f,
-			-0.5f, 0.5f,0.0f,0.0f,0.0f
+			-1.0f,-1.0f,0.0f,0.0f,1.0f,
+			 1.0f,-1.0f,0.0f,1.0f,1.0f,
+			 1.0f, 1.0f,0.0f,1.0f,0.0f,
+			-1.0f, 1.0f,0.0f,0.0f,0.0f
 		};
 		vbo_data t;
 

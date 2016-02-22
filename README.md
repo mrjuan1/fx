@@ -1,16 +1,20 @@
 Template
 ========
-A simple template for preparing GLES2-based presentations/experiments. Made for my own personal use and for use at my work place, sharing for educational purposes, etc.
+A simple template for preparing GLES3-based presentations/experiments. Made for my own personal use and for use at my work place, sharing for educational purposes, etc.
 
 Licensed under zlib license. Not accepting any contributions for now as this is just intended for personal use. Only sharing because sharing is caring :)
 
+See todo.txt for future development notes.
+
 Build
 =====
+This'll only build on Linux at the moment. Windows support will come later, though it isn't too hard to port to Windows for now.
+
 Dependencies:
 ```
 sudo apt-get install libsdl2-dev libgl1-mesa-dev libgles2-mesa-dev
 ```
-Either that or just install libsdl2-dev, link against libGL and use GLESv2 headers.
+Either that or just install libsdl2-dev, link against libGL and use GLESv3 headers.
 
 After dependencies are installed...
 ```
@@ -26,12 +30,12 @@ Makefile
 ```
 It's obvious what this is for. Just some extra notes that the window title and size are hard-coded here as defines in the CFLAGS.
 
-Stricter rules for C and some unnecessary optimizations are applied here too. These can be removed with just -std=c89 that could cause some conflicts, but mostly just defines in 3dm.h (I think?)
+Stricter rules for C and some unnecessary optimizations are applied here too. These can be removed with just -std=c89 that could cause some conflicts, but mostly just defines in 3dm.h.
 
 ```
 main
 ```
-Set's up the SDL2 window and GL context and handles some input. Some context values are hard-coded here too, might work on a config system in the future.
+Sets up the SDL2 window and GL context and handles some input. Some context values are hard-coded here too, might work on a config system in the future.
 
 ```
 gl
@@ -63,4 +67,5 @@ Simple (and lazy) vbo manipulating functions. Simple examples only have one vbo 
 ```
 quad
 ```
-Set's up a triangle fan quad. Nice for quick fragment shader tests
+Sets up a triangle fan quad. Nice for quick fragment shader tests
+

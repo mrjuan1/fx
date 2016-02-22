@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 
 #include "basic.h"
 #include "vbo.h"
+
 #include "quad.h"
 
 #endif /* __APP_H__ */

@@ -21,13 +21,18 @@ freely, subject to the following restrictions:
 
 #include "main.h"
 
-#include <GLES2/gl2.h>
+#include <GLES3/gl3.h>
 
 typedef enum {
 	tf_none,
 	tf_linear,
 	tf_mipmap
 } tex_filter;
+
+typedef enum {
+	tw_clamp,
+	tw_repeat
+} tex_wrap;
 
 typedef struct {
 	unint texs[2];
@@ -46,6 +51,7 @@ byte load_pro(unint p, const char *vs_fname, const char *fs_fname);
 byte load_tex(unint t, const char *fname, unshort w, unshort h, GLenum fmt, tex_filter tf);
 
 void filter_tex(tex_filter tf);
+void wrap_tex(tex_wrap tw);
 
 void init_fbo(fbo_data *f, unshort w, unshort h, tex_filter tf);
 void done_fbo(fbo_data *f);

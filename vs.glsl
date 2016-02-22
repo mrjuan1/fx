@@ -16,12 +16,17 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution. */
 
+#version 300 es
+
+precision mediump int;
+precision mediump float;
+
 uniform mat4 pview;
 
-attribute vec3 pos;
-attribute vec2 tc;
+layout(location=0) in vec3 pos;
+layout(location=1) in vec2 tc;
 
-varying vec2 vtc;
+out vec2 vtc;
 
 void main(void)
 {

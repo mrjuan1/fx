@@ -18,18 +18,17 @@ freely, subject to the following restrictions: \
 
 SRCS := $(shell ls *.c)
 OBJS := $(SRCS:%.c=%.o)
-O := $(shell basename `pwd`)
+O := template
 
 CC := cc
 STRIP := strip
 
-CFLAGS := $(shell sdl2-config --cflags) $(shell pkg-config --cflags glesv2)
+CFLAGS := $(shell sdl2-config --cflags)
 CFLAGS += -nocpp -std=c89 -pedantic -Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes -Wold-style-definition -Werror
 CFLAGS += -O3 -pipe -m64 -march=native -mtune=native -ftree-vectorize -ffast-math -funroll-loops
 CFLAGS += -DTITLE="\"Template\"" -DSW=800 -DSH=450
 
-LDFLAGS := $(shell sdl2-config --libs)
-LDFLAGS += $(shell pkg-config --libs gl) -lm
+LDFLAGS := $(shell sdl2-config --libs) -lGL -lm
 
 all: run
 	@echo "Done."
