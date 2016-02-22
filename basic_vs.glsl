@@ -16,38 +16,20 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution. */
 
-#ifndef __GL_H__
-#define __GL_H__
+#version 300 es
 
-#include "main.h"
+precision mediump int;
+precision mediump float;
 
-#include <GLES3/gl3.h>
+uniform mat4 pview;
 
-typedef enum {
-	tf_none,
-	tf_linear,
-	tf_mipmap
-} tex_filter;
+layout(location=0) in vec3 pos;
+layout(location=1) in vec2 tc;
 
-typedef enum {
-	tw_clamp,
-	tw_repeat
-} tex_wrap;
+out vec2 vtc;
 
-#define clcol() glClear(GL_COLOR_BUFFER_BIT)
-#define cldep() glClear(GL_DEPTH_BUFFER_BIT)
-#define use_tex(t) glBindTexture(GL_TEXTURE_2D,t)
-#define unuse_fbo() glBindFramebuffer(GL_FRAMEBUFFER,0)
-
-void viewport(unshort x, unshort y, unshort w, unshort h);
-void clear(void);
-
-byte load_pro(unint p, const char *vs_fname, const char *fs_fname);
-byte load_tex(unint t, const char *fname, unshort w, unshort h, GLenum fmt, tex_filter tf);
-
-void filter_tex(tex_filter tf);
-void wrap_tex(tex_wrap tw);
-
-/* rework fbo support (see todo.txt) */
-
-#endif /* __GL_H__ */
+void main(void)
+{
+	gl_Position=pview*vec4(pos,1.0f);
+	vtc=tc;
+}

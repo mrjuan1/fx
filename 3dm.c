@@ -90,7 +90,9 @@ float dot(vec4 a, vec4 b)
 vec4 unit(vec4 a)
 {
 	const float t=sqrtf(dot(a,a));
-	if(t!=0.0f) return a*(1.0f/t);
+
+	if(t!=0.0f)
+		return a*(1.0f/t);
 	else return v0();
 }
 

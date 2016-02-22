@@ -21,23 +21,13 @@ freely, subject to the following restrictions:
 precision mediump int;
 precision mediump float;
 
-uniform vec4 col;
+layout(location=0) in vec3 pos;
+layout(location=1) in vec2 tc;
 
-uniform int texmode;
-uniform sampler2D texmap;
-
-in vec2 vtc;
-
-layout(location=0) out vec4 oc;
+out vec2 vtc;
 
 void main(void)
 {
-	oc=col;
-
-	switch(texmode)
-	{
-		case 1: oc*=texture(texmap,vtc);
-	}
-
-	if(oc.a==0.0) discard;
+	gl_Position=pview*vec4(pos,1.0f);
+	vtc=tc;
 }

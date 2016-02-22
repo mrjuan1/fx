@@ -55,6 +55,12 @@ unint load_shader(const char *fname, GLenum type)
 	else return 0;
 }
 
+void viewport(unshort x, unshort y, unshort w, unshort h)
+{
+	glViewport(x,y,w,h);
+	glScissor(x,y,w,h);
+}
+
 void clear(void)
 {
 	glClear(_clbit);
@@ -142,38 +148,3 @@ void wrap_tex(tex_wrap tw)
 }
 
 /* rework fbo support (see todo.txt) */
-void init_fbo(fbo_data *f, unshort w, unshort h, tex_filter tf)
-{
-	glGenTextures(2,f->texs);
-	f->w=w; f->h=h;
-
-	use_tex(f->texs[0]);
-	filter_tex(tf);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,f->w,f->h,0,GL_RGBA,GL_UNSIGNED_BYTE,NULL);
-
-	use_tex(f->texs[1]);
-	filter_tex(tf);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT,f->w,f->h,0,GL_DEPTH_COMPONENT,GL_UNSIGNED_SHORT,NULL);
-
-	use_tex(0);
-	glGenFramebuffers(1,&f->id);
-	glBindFramebuffer(GL_FRAMEBUFFER,f->id);
-	glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,f->texs[0],0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_TEXTURE_2D,f->texs[1],0);
-	glBindFramebuffer(GL_FRAMEBUFFER,0);
-}
-
-void done_fbo(fbo_data *f)
-{
-	glDeleteFramebuffers(1,&f->id);
-	glDeleteTextures(2,f->texs);
-
-	memset((void*)f,0,sizeof(fbo_data));
-}
-
-void use_fbo(const fbo_data *f)
-{
-	glBindFramebuffer(GL_FRAMEBUFFER,f->id);
-	glViewport(0,0,f->w,f->h);
-	glScissor(0,0,f->w,f->h);
-}

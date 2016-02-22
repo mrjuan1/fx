@@ -1,2 +1,4 @@
 *.o
 template
+originals
+next-commit.txt
