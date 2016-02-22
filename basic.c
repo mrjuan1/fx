@@ -33,7 +33,7 @@ byte init_basic(void)
 	if(!_basic_init)
 	{
 		_basic_p=glCreateProgram();
-		if(load_pro(_basic_p,"basic_vs.glsl","basic_fs.glsl"))
+		if(load_pro(_basic_p,"vs.glsl","fs.glsl"))
 		{
 			mat4 mat;
 

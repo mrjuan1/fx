@@ -29,7 +29,6 @@ uniform sampler2D texmap;
 in vec2 vtc;
 
 layout(location=0) out vec4 oc;
-layout(location=1) out vec4 oc2;
 
 void main(void)
 {
@@ -39,8 +38,6 @@ void main(void)
 	{
 		case 1: oc*=texture(texmap,vtc);
 	}
-
-	oc2=oc/2.0f;
 
 	if(oc.a==0.0f) discard;
 }
