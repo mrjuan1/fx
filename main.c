@@ -60,10 +60,8 @@ int main(void)
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,0);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,0);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
-	/* Place window at bottom-right of main screen. Suits my development environment/layout, can be changed as needed */
-	win=SDL_CreateWindow(TITLE,1920-SW,1080-SH,SW,SH,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
+	win=SDL_CreateWindow(TITLE,0,0,0,0,SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS|SDL_WINDOW_FULLSCREEN_DESKTOP|SDL_WINDOW_OPENGL);
 
-	/* Incomment to capture the mouse on startup */
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	SDL_ShowCursor(0);
 
@@ -140,10 +138,7 @@ int main(void)
 			start=SDL_GetTicks();
 			lt=0;
 
-			/* Uncomment and remove the temp line to not quit when the window looses focus */
-			/* This is just intended as a quick way to quit when I'm done testing and wish to return to coding quickly */
-			/*SDL_Delay(100);*/
-			running=0; /* temp */
+			SDL_Delay(100);
 		}
 
 		_mm=0;
