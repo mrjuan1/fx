@@ -1,4 +1,3 @@
-upload originals, include as submodule, specify in readme
 separate "light" objects as new model
 	...OR render out "bright parts" only to a framebuffer
 add initial bloom support

@@ -1,5 +1,4 @@
 *.o
 fx
-originals/*.blend*
-originals/*.png
+originals
 next-commit.txt
