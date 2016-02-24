@@ -24,8 +24,10 @@ freely, subject to the following restrictions:
 #include "3dm.h"
 
 #include "basic.h"
-#include "vbo.h"
+#include "mblur.h"
+#include "vig.h"
 
+#include "vbo.h"
 #include "quad.h"
 
 #endif /* __APP_H__ */

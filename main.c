@@ -57,15 +57,15 @@ int main(void)
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,0);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,0);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,0);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,0);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
 	/* Place window at bottom-right of main screen. Suits my development environment/layout, can be changed as needed */
 	win=SDL_CreateWindow(TITLE,1920-SW,1080-SH,SW,SH,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
 
 	/* Incomment to capture the mouse on startup */
-	/*SDL_SetRelativeMouseMode(SDL_TRUE);
-	SDL_ShowCursor(0);*/
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_ShowCursor(0);
 
 	context=SDL_GL_CreateContext(win);
 	if(SDL_GL_SetSwapInterval(-1)==-1 && SDL_GL_SetSwapInterval(1)==-1)

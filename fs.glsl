@@ -23,21 +23,23 @@ precision mediump float;
 
 uniform vec4 col;
 
-uniform int texmode;
+uniform bool texmode;
 uniform sampler2D texmap;
 
 in vec2 vtc;
+in vec4 vpos, vlpos;
 
 layout(location=0) out vec4 oc;
+layout(location=1) out vec4 ov;
 
 void main(void)
 {
 	oc=col;
-
-	switch(texmode)
-	{
-		case 1: oc*=texture(texmap,vtc);
-	}
-
+	if(texmode)
+		oc*=texture(texmap,vtc);
 	if(oc.a==0.0f) discard;
+
+	vec2 pos=vpos.xy/vpos.w;
+	vec2 lpos=vlpos.xy/vlpos.w;
+	ov=vec4(pos-lpos,0.0f,1.0f);
 }

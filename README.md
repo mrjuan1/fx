@@ -1,71 +1,22 @@
-Template
-========
-A simple template for preparing GLES3-based presentations/experiments. Made for my own personal use and for use at my work place, sharing for educational purposes, etc.
+FX
+====
+A small post-processing fx demo
 
-Licensed under zlib license. Not accepting any contributions for now as this is just intended for personal use. Only sharing because sharing is caring :)
+Effects include object-based motion blur, fake chromatics, vignette and contrast adjustments.
 
-See todo.txt for future development notes.
+The main colour buffer used in the shaders is blitted from a framebuffer with multisampled renderbuffers attached, as to keep GLES 3.0 compatibility. Samples for this and for the motion blur can be adjusted in app.c
+
+Same license applies to all the files here as in the template repo.
+
+Future
+======
+Would like to implement blooming, but might need to separate bright objects and render them on their own with a blurring shader of some sort, then overlay the result over the screen. Not sure how this'll effect the other fx, will need to do a little planning here...
+
+Other than that, some fog effects and hazy lights (part of bloom?) will be implemented here too.
+
+Only concern is performance with so many special effects overlaying each other. Will probably implement toggles for each effect later too.
 
 Build
 =====
-This'll only build on Linux at the moment. Windows support will come later, though it isn't too hard to port to Windows for now.
-
-Dependencies:
-```
-sudo apt-get install libsdl2-dev libgl1-mesa-dev libgles2-mesa-dev
-```
-Either that or just install libsdl2-dev, link against libGL and use GLESv3 headers.
-
-After dependencies are installed...
-```
-cd template
-make
-```
-This will automatically run a simple demo after building.
-
-Files
-=====
-```
-Makefile
-```
-It's obvious what this is for. Just some extra notes that the window title and size are hard-coded here as defines in the CFLAGS.
-
-Stricter rules for C and some unnecessary optimizations are applied here too. These can be removed with just -std=c89 that could cause some conflicts, but mostly just defines in 3dm.h.
-
-```
-main
-```
-Sets up the SDL2 window and GL context and handles some input. Some context values are hard-coded here too, might work on a config system in the future.
-
-```
-gl
-```
-Provides some "GL shortcuts" for us lazy people who don't feel like typing out long functions or lines of code to achieve something simple. Such shortcuts include shader loading, texture loading, texture filtering and framebuffer-related tasks.
-
-```
-3dm
-```
-All the vectorize matrix and vector transform functions. Probably not the best out there, but I get good performance with these (especially on arm-based devices)
-
-```
-app
-```
-More or less where the user's custom code will come in. There are three functions here: init, loop, and done. It's kind of obvious what these are for.
-
-```
-basic and *.glsl
-```
-A simple shader-loader that prepares vs.glsl and fs.glsl for application use. Also includes lazy shortcut functions.
-
-A note on texmode in fs.glsl: this is just a placeholder for more special effects. I tend to cram all shader experiments into one program for simple examples.
-
-```
-vbo
-```
-Simple (and lazy) vbo manipulating functions. Simple examples only have one vbo that all model data goes to.
-
-```
-quad
-```
-Sets up a triangle fan quad. Nice for quick fragment shader tests
+See template repo for more details and build instructions
 

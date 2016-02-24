@@ -24,7 +24,7 @@ byte _basic_init=0;
 
 unint _basic_p=0;
 struct {
-	int pview;
+	int pview, lpview;
 	int col, texmode, texmap;
 } _basic_pv;
 
@@ -37,9 +37,10 @@ byte init_basic(void)
 		{
 			mat4 mat;
 
-			glUseProgram(_basic_p);
+			use_basic();
 
 			_basic_pv.pview=glGetUniformLocation(_basic_p,"pview");
+			_basic_pv.lpview=glGetUniformLocation(_basic_p,"lpview");
 
 			_basic_pv.col=glGetUniformLocation(_basic_p,"col");
 			_basic_pv.texmode=glGetUniformLocation(_basic_p,"texmode");
@@ -47,6 +48,7 @@ byte init_basic(void)
 
 			idmat(mat);
 			send_pview(mat);
+			send_lpview(mat);
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
 
@@ -60,7 +62,7 @@ byte init_basic(void)
 		else
 		{
 			glDeleteProgram(_basic_p);
-			info("Program not created\n");
+			info("Program \"basic\" not created\n");
 		}
 	}
 
@@ -76,9 +78,19 @@ void done_basic(void)
 	}
 }
 
+void use_basic(void)
+{
+	glUseProgram(_basic_p);
+}
+
 void send_pview(const mat4 mat)
 {
 	glUniformMatrix4fv(_basic_pv.pview,1,GL_FALSE,(const float*)mat);
+}
+
+void send_lpview(const mat4 mat)
+{
+	glUniformMatrix4fv(_basic_pv.lpview,1,GL_FALSE,(const float*)mat);
 }
 
 void send_attribs(void)
@@ -92,7 +104,7 @@ void send_col(vec4 col)
 	glUniform4fv(_basic_pv.col,1,(const float*)&col);
 }
 
-void texmode(int mode)
+void texmode(byte on)
 {
-	glUniform1i(_basic_pv.texmode,mode);
+	glUniform1i(_basic_pv.texmode,(int)on);
 }

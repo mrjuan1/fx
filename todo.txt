@@ -1,5 +1,0 @@
-rework fbo support
-	need to support more formats, multisampling and mrt's
-add binary shader program support
-add support for compressed etc2 textures (with mipmapping)
-

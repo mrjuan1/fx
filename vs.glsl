@@ -21,15 +21,21 @@ freely, subject to the following restrictions:
 precision mediump int;
 precision mediump float;
 
-uniform mat4 pview;
+uniform mat4 pview, lpview;
 
 layout(location=0) in vec3 pos;
 layout(location=1) in vec2 tc;
 
 out vec2 vtc;
+out vec4 vpos, vlpos;
 
 void main(void)
 {
-	gl_Position=pview*vec4(pos,1.0f);
+	vec4 p=vec4(pos,1.0f);
+
+	gl_Position=pview*p;
 	vtc=tc;
+
+	vpos=gl_Position;
+	vlpos=lpview*p;
 }

@@ -24,10 +24,13 @@ freely, subject to the following restrictions:
 byte init_basic(void);
 void done_basic(void);
 
+void use_basic(void);
+
 void send_pview(const mat4 mat);
+void send_lpview(const mat4 mat);
 void send_attribs(void);
 
 void send_col(vec4 col);
-void texmode(int mode);
+void texmode(byte on);
 
 #endif /* __BASIC_H__ */
