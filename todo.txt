@@ -1,0 +1,10 @@
+upload originals, include as submodule, specify in readme
+separate "light" objects as new model
+	...OR render out "bright parts" only to a framebuffer
+add initial bloom support
+
+add fog fx
+	include small moving cloud billboards near the ground
+	haze lights after a certain distance threshold (replace raw bloom effect?)
+	fade out hazed lights after a cetrain threshold
+

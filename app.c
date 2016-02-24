@@ -31,6 +31,7 @@ float ndir=180.0f, ntilt=90.0f, nzoom=10.0f;
 vbo_data area_mod;
 unint area_tex=0;
 
+int nsw=0, nsh=0;
 unint texs[4], rbs[3];
 unint fbos[4];
 
@@ -44,7 +45,7 @@ void init(void)
 		glClearColor(0.04f,0.0f,0.04f,1.0f);
 
 		use_mblur();
-		send_mblur_samples(16.0f);
+		send_mblur_samples(16.0f); /* ----- */
 
 		use_vig();
 		send_vig_size((float)sw,(float)sh);
@@ -65,28 +66,31 @@ void init(void)
 				update_vbo();
 				texmode(1);
 
+				nsw=sw/1;
+				nsh=sh/1;
+
 				glGenTextures(4,texs);
 				use_tex(texs[0]);
 				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,sw,sh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,nsw,nsh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
 				use_tex(texs[1]);
 				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,sw,sh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,nsw,nsh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
 				use_tex(texs[2]);
 				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA32F,sw,sh,0,GL_RGBA,GL_FLOAT,NULL);
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA32F,nsw,nsh,0,GL_RGBA,GL_FLOAT,NULL);
 				use_tex(texs[3]);
 				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,sw,sh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,nsw,nsh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
 				use_tex(0);
 
 				glGenRenderbuffers(3,rbs);
 				glBindRenderbuffer(GL_RENDERBUFFER,rbs[0]);
-				glRenderbufferStorageMultisample(GL_RENDERBUFFER,8,GL_RGB8,sw,sh);
+				glRenderbufferStorageMultisample(GL_RENDERBUFFER,8,GL_RGB8,nsw,nsh); /* adjust renderbuffer samples here */
 				glBindRenderbuffer(GL_RENDERBUFFER,rbs[1]);
-				glRenderbufferStorageMultisample(GL_RENDERBUFFER,8,GL_DEPTH_COMPONENT24,sw,sh);
+				glRenderbufferStorageMultisample(GL_RENDERBUFFER,8,GL_DEPTH_COMPONENT24,nsw,nsh); /* adjust renderbuffer samples here */
 				glBindRenderbuffer(GL_RENDERBUFFER,rbs[2]);
-				glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,sw,sh);
+				glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,nsw,nsh);
 				glBindRenderbuffer(GL_RENDERBUFFER,0);
 
 				glGenFramebuffers(4,fbos);
@@ -120,6 +124,7 @@ void loop(void)
 	float dc=0.0f, ds=0.0f;
 	float tc=0.0f, ts=0.0f;
 
+	/*viewport(0,0,nsw,nsh);*/
 	use_basic();
 	send_lpview(pview);
 
@@ -169,9 +174,12 @@ void loop(void)
 
 	send_pview(pview);
 
+	/* ----- */
 	glBindFramebuffer(GL_FRAMEBUFFER,fbos[0]);
 	clear();
+	/* ----- */
 	use_tex(area_tex);
+	/* ----- */
 	draw_vbo(&area_mod);
 	unuse_fbo();
 
@@ -180,16 +188,16 @@ void loop(void)
 	glBlitFramebuffer(0,0,sw,sh,0,0,sw,sh,GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
 	glBindFramebuffer(GL_READ_FRAMEBUFFER,0);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+	/* ----- */
 
 	glBindFramebuffer(GL_FRAMEBUFFER,fbos[2]);
 	glDrawBuffers(2,fb0bufs);
 	clear();
-	use_tex(area_tex);
 	draw_vbo(&area_mod);
 	unuse_fbo();
 
 	use_mblur();
-	use_tex(texs[0]);
+	use_tex(texs[0]); /* ----- */
 	glActiveTexture(GL_TEXTURE1);
 	use_tex(texs[2]);
 	glActiveTexture(GL_TEXTURE0);
@@ -200,6 +208,7 @@ void loop(void)
 	quad();
 	unuse_fbo();
 
+	/*viewport(0,0,sw,sh);*/
 	use_vig();
 	use_tex(texs[3]);
 	clear();

@@ -20,6 +20,8 @@ Other than that, some fog effects and hazy lights (part of bloom?) will be imple
 
 Only concern is performance with so many special effects overlaying each other. Will probably implement toggles for each effect later too.
 
+Simple breakdown in todo.txt
+
 Build
 =====
 See template repo for more details and build instructions. This demo also only runs on Linux for now. Might include Windows/Android support later.
