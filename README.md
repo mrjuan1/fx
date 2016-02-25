@@ -10,7 +10,7 @@ Same license applies to all the files here as in the template repo (included bel
 
 Controls
 ========
-Just move the mouse, it controls the camera.
+Move mouse to rotate model and mouse wheel to zoom. Middle-mouse click resets the zoom-level.
 
 Future
 ======
