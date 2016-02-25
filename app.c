@@ -156,6 +156,7 @@ void loop(void)
 			else if(zoom>12.0f) zoom=12.0f;
 		}
 	}
+	if(mp(3)) zoom=10.0f;
 
 	ndir-=(ndir-dir)*spd2;
 	r=d2r(ndir);

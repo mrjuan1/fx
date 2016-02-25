@@ -26,7 +26,7 @@ STRIP := strip
 CFLAGS := $(shell sdl2-config --cflags)
 CFLAGS += -nocpp -std=c89 -pedantic -Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes -Wold-style-definition -Werror
 CFLAGS += -O3 -pipe -m64 -march=native -mtune=native -ftree-vectorize -ffast-math -funroll-loops
-CFLAGS += -DTITLE="\"FX\""
+CFLAGS += -DTITLE="\"FX\"" -DSW=1280 -DSH=720
 
 LDFLAGS := $(shell sdl2-config --libs) -lGL -lm
 

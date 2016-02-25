@@ -1,6 +1,8 @@
+implement "framebuffer shortcuts"
+
 separate "light" objects as new model
 	...OR render out "bright parts" only to a framebuffer
-add initial bloom support
+add initial bloom support (blur shader)
 
 add fog fx
 	include small moving cloud billboards near the ground

@@ -40,7 +40,7 @@ void main(void)
 	float b=texture(colmap,vec2(vtc.x,(((vtc.y*2.0f)-1.0f)*offset*0.5f)+0.5f)).b;
 	if(oc.b!=b) oc.b=b;
 
-	oc*=oc*2.0f;
+	oc=pow(oc,vec4(1.5f))*1.5f;
 
 	float vig=smoothstep(0.85f,0.85f-(0.85f/2.0f),length(vtc-0.5f));
 	oc.rgb*=vig;
