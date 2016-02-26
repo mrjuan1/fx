@@ -1,5 +1,3 @@
-implement "framebuffer shortcuts"
-
 separate "light" objects as new model
 	...OR render out "bright parts" only to a framebuffer
 add initial bloom support (blur shader)

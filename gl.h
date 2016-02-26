@@ -29,25 +29,39 @@ typedef enum {
 	tf_mipmap
 } tex_filter;
 
-typedef enum {
-	tw_clamp,
-	tw_repeat
-} tex_wrap;
-
 #define clcol() glClear(GL_COLOR_BUFFER_BIT)
 #define cldep() glClear(GL_DEPTH_BUFFER_BIT)
+
+#define gen_fbs glGenFramebuffers
+#define gen_rbs glGenRenderbuffers
+#define gen_texs glGenTextures
+
+#define del_fbs glDeleteFramebuffers
+#define del_rbs glDeleteRenderbuffers
+#define del_texs glDeleteTextures
+
+#define use_fb(f) glBindFramebuffer(GL_FRAMEBUFFER,f)
+#define use_rb(r) glBindRenderbuffer(GL_RENDERBUFFER,r)
 #define use_tex(t) glBindTexture(GL_TEXTURE_2D,t)
-#define unuse_fbo() glBindFramebuffer(GL_FRAMEBUFFER,0)
+
+#define default_tex() glActiveTexture(GL_TEXTURE0)
 
 void viewport(unshort x, unshort y, unshort w, unshort h);
 void clear(void);
 
 byte load_pro(unint p, const char *vs_fname, const char *fs_fname);
+
 byte load_tex(unint t, const char *fname, unshort w, unshort h, GLenum fmt, tex_filter tf);
-
+byte load_tex_compressed(unint t, const char *fname, tex_filter tf);
 void filter_tex(tex_filter tf);
-void wrap_tex(tex_wrap tw);
+void clamp_tex(byte on);
 
-/* rework fbo support (see todo.txt) */
+void add_fb_rb(int attachment, unint r, unshort w, unshort h, GLenum fmt, int samples);
+void add_fb_tex(int attachment, unint t, unshort w, unshort h, GLint ifmt, tex_filter tf);
+
+void set_drawbufs(int count);
+void active_tex(GLenum texnum, unint t);
+
+void blit_fb(unint from, unint to, unshort w, unshort h);
 
 #endif /* __GL_H__ */

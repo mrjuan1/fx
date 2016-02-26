@@ -19,14 +19,14 @@ freely, subject to the following restrictions:
 #ifndef __3DM_H__
 #define __3DM_H__
 
-#ifdef __STDC__
+#ifdef __STRICT_ANSI__
 	#include <stdlib.h>
 	#define __USE_MISC
-#endif /* __STDC__ */
+#endif /* __STRICT_ANSI__ */
 #include <math.h>
-#ifdef __STDC__
+#ifdef __STRICT_ANSI__
 	float tanf(float), cosf(float), sinf(float);
-#endif /* __STDC__ */
+#endif /* __STRICT_ANSI__ */
 
 typedef float __attribute__((vector_size(4*sizeof(float)),aligned(sizeof(float)))) vec4;
 typedef vec4 mat4[4];

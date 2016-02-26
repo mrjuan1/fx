@@ -18,7 +18,7 @@ freely, subject to the following restrictions: \
 
 SRCS := $(shell ls *.c)
 OBJS := $(SRCS:%.c=%.o)
-O := fx
+O := template
 
 CC := cc
 STRIP := strip

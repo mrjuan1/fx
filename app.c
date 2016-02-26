@@ -18,12 +18,6 @@ freely, subject to the following restrictions:
 
 #include "app.h"
 
-const GLenum fb0bufs[2]={
-	GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1
-}, fb1bufs[1]={
-	GL_COLOR_ATTACHMENT0
-};
-
 mat4 proj, view, pview;
 float dir=180.0f, tilt=90.0f, zoom=10.0f;
 float ndir=180.0f, ntilt=90.0f, nzoom=10.0f;
@@ -45,7 +39,7 @@ void init(void)
 		glClearColor(0.04f,0.0f,0.04f,1.0f);
 
 		use_mblur();
-		send_mblur_samples(16.0f); /* ----- */
+		send_mblur_samples(16.0f); /* adjust motion blur samples here */
 
 		use_vig();
 		send_vig_size((float)sw,(float)sh);
@@ -54,59 +48,46 @@ void init(void)
 		use_basic();
 		persp(proj,75.0f,asp(),0.1f,24.0f);
 
-		if(fload("data/area.bin",&size,&data))
+		if(fload("data/area-model.bin",&size,&data))
 		{
 			add_to_vbo(&area_mod,data,size);
 			free(data);
 
-			glGenTextures(1,&area_tex);
-			/*if(load_tex(area_tex,"data/area-ao.data",2048,2048,GL_LUMINANCE,tf_mipmap))*/
-			if(load_tex(area_tex,"data/area.data",2048,2048,GL_RGB,tf_mipmap))
+			update_vbo();
+
+			gen_texs(1,&area_tex);
+			/*if(load_tex_compressed(area_tex,"data/area-ao-texture.bin",tf_mipmap))*/
+			if(load_tex_compressed(area_tex,"data/area-texture.bin",tf_mipmap))
 			{
-				update_vbo();
+				const int downsample=1; /* adjust fb down-sizing here */
 				texmode(1);
 
-				nsw=sw/1;
-				nsh=sh/1;
+				nsw=sw/downsample;
+				nsh=sh/downsample;
 
-				glGenTextures(4,texs);
-				use_tex(texs[0]);
-				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,nsw,nsh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
-				use_tex(texs[1]);
-				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,nsw,nsh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
-				use_tex(texs[2]);
-				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA32F,nsw,nsh,0,GL_RGBA,GL_FLOAT,NULL);
-				use_tex(texs[3]);
-				filter_tex(tf_linear);
-				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,nsw,nsh,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+				gen_texs(4,texs);
+				gen_rbs(3,rbs);
+				gen_fbs(4,fbos);
+
+				use_fb(fbos[0]);
+				add_fb_rb(0,rbs[0],nsw,nsh,GL_RGB8,4); /* adjust renderbuffer samples here */
+				add_fb_rb(0,rbs[1],nsw,nsh,GL_DEPTH_COMPONENT24,4); /* adjust renderbuffer samples here */
+
+				use_fb(fbos[1]);
+				add_fb_tex(0,texs[0],nsw,nsh,GL_RGB8,tf_linear);
+				add_fb_rb(0,rbs[2],nsw,nsh,GL_DEPTH_COMPONENT24,0);
+
+				use_fb(fbos[2]);
+				add_fb_tex(0,texs[1],nsw,nsh,GL_RGB8,tf_linear);
+				add_fb_tex(1,texs[2],nsw,nsh,GL_RGBA32F,tf_linear);
+				add_fb_rb(0,rbs[2],nsw,nsh,GL_DEPTH_COMPONENT24,0);
+
+				use_fb(fbos[3]);
+				add_fb_tex(0,texs[3],nsw,nsh,GL_RGB8,tf_linear);
+
+				use_fb(0);
+				use_rb(0);
 				use_tex(0);
-
-				glGenRenderbuffers(3,rbs);
-				glBindRenderbuffer(GL_RENDERBUFFER,rbs[0]);
-				glRenderbufferStorageMultisample(GL_RENDERBUFFER,8,GL_RGB8,nsw,nsh); /* adjust renderbuffer samples here */
-				glBindRenderbuffer(GL_RENDERBUFFER,rbs[1]);
-				glRenderbufferStorageMultisample(GL_RENDERBUFFER,8,GL_DEPTH_COMPONENT24,nsw,nsh); /* adjust renderbuffer samples here */
-				glBindRenderbuffer(GL_RENDERBUFFER,rbs[2]);
-				glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,nsw,nsh);
-				glBindRenderbuffer(GL_RENDERBUFFER,0);
-
-				glGenFramebuffers(4,fbos);
-				glBindFramebuffer(GL_FRAMEBUFFER,fbos[0]);
-				glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_RENDERBUFFER,rbs[0]);
-				glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,rbs[1]);
-				glBindFramebuffer(GL_FRAMEBUFFER,fbos[1]);
-				glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,texs[0],0);
-				glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,rbs[2]);
-				glBindFramebuffer(GL_FRAMEBUFFER,fbos[2]);
-				glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,texs[1],0);
-				glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT1,GL_TEXTURE_2D,texs[2],0);
-				glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,rbs[2]);
-				glBindFramebuffer(GL_FRAMEBUFFER,fbos[3]);
-				glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,texs[3],0);
-				unuse_fbo();
 			}
 			else quit();
 		}
@@ -176,42 +157,41 @@ void loop(void)
 	send_pview(pview);
 
 	/* ----- */
-	glBindFramebuffer(GL_FRAMEBUFFER,fbos[0]);
+	use_fb(fbos[0]);
 	clear();
 	/* ----- */
 	use_tex(area_tex);
 	/* ----- */
 	draw_vbo(&area_mod);
-	unuse_fbo();
+	use_fb(0);
 
-	glBindFramebuffer(GL_READ_FRAMEBUFFER,fbos[0]);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbos[1]);
-	glBlitFramebuffer(0,0,sw,sh,0,0,sw,sh,GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT,GL_NEAREST);
-	glBindFramebuffer(GL_READ_FRAMEBUFFER,0);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+	blit_fb(fbos[0],fbos[1],nsw,nsh);
 	/* ----- */
 
-	glBindFramebuffer(GL_FRAMEBUFFER,fbos[2]);
-	glDrawBuffers(2,fb0bufs);
+	use_fb(fbos[2]);
+	set_drawbufs(2);
 	clear();
 	draw_vbo(&area_mod);
-	unuse_fbo();
+	use_fb(0);
 
 	use_mblur();
 	use_tex(texs[0]); /* ----- */
-	glActiveTexture(GL_TEXTURE1);
-	use_tex(texs[2]);
-	glActiveTexture(GL_TEXTURE0);
+	active_tex(GL_TEXTURE1,texs[2]);
+	default_tex();
 
-	glBindFramebuffer(GL_FRAMEBUFFER,fbos[3]);
-	glDrawBuffers(1,fb1bufs);
+	use_fb(fbos[3]);
+	set_drawbufs(1);
 	clear();
 	quad();
-	unuse_fbo();
+	use_fb(0);
+
+	active_tex(GL_TEXTURE1,0);
+	default_tex();
 
 	/*viewport(0,0,sw,sh);*/
 	use_vig();
 	use_tex(texs[3]);
+
 	clear();
 	quad();
 
@@ -221,11 +201,11 @@ void loop(void)
 
 void done(void)
 {
-	glDeleteFramebuffers(4,fbos);
-	glDeleteRenderbuffers(3,rbs);
-	glDeleteTextures(4,texs);
+	del_fbs(4,fbos);
+	del_rbs(3,rbs);
+	del_texs(4,texs);
 
-	glDeleteTextures(1,&area_tex);
+	del_texs(1,&area_tex);
 
 	done_quad();
 	done_vbo();
