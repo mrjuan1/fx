@@ -6,6 +6,8 @@ Effects include object-based motion blur, fake chromatics, vignette and contrast
 
 The main colour buffer used in the shaders is blitted from a framebuffer with multisampled renderbuffers attached, as to keep GLES 3.0 compatibility. Samples for this and for the motion blur can be adjusted in app.c
 
+![alt text](https://github.com/mrjuan1/fx/raw/master/logo.png "Screenshot")
+
 Same license applies to all the files here as in the template repo (included below for reference).
 
 Controls

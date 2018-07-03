@@ -95,8 +95,8 @@ void send_lpview(const mat4 mat)
 
 void send_attribs(void)
 {
-	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,stride,NULL);
-	glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,stride,_basic_offset);
+	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,stride(),NULL);
+	glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,stride(),_basic_offset);
 }
 
 void send_col(vec4 col)

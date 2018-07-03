@@ -25,19 +25,19 @@ freely, subject to the following restrictions:
 #include <malloc.h>
 #include <string.h>
 
-#include "SDL_scancode.h"
+#include <SDL2/SDL_scancode.h>
 
 typedef unsigned char byte;
 typedef unsigned short unshort;
 typedef unsigned int unint;
 
-#define sw get_sw()
-#define sh get_sh()
-#define mm get_mm()
-#define mx get_mx()
-#define my get_my()
-#define mw get_mw()
-#define dt get_dt()
+#define sw() get_sw()
+#define sh() get_sh()
+#define mm() get_mm()
+#define mx() get_mx()
+#define my() get_my()
+#define mw() get_mw()
+#define dt() get_dt()
 
 void info(const char *text, ...);
 byte fload(const char *fname, int *size, void **data);

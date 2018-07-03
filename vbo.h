@@ -25,7 +25,7 @@ typedef struct {
 	int offset, count;
 } vbo_data;
 
-#define stride get_stride()
+#define stride() get_stride()
 
 int get_stride(void);
 

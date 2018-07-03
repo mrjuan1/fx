@@ -42,7 +42,7 @@ void init(void)
 		send_mblur_samples(16.0f); /* adjust motion blur samples here */
 
 		use_vig();
-		send_vig_size((float)sw,(float)sh);
+		send_vig_size((float)sw(),(float)sh());
 		vigmode(0);
 
 		use_basic();
@@ -56,14 +56,14 @@ void init(void)
 			update_vbo();
 
 			gen_texs(1,&area_tex);
-			/*if(load_tex_compressed(area_tex,"data/area-ao-texture.bin",tf_mipmap))*/
+			//if(load_tex_compressed(area_tex,"data/area-ao-texture.bin",tf_mipmap))
 			if(load_tex_compressed(area_tex,"data/area-texture.bin",tf_mipmap))
 			{
 				const int downsample=1; /* adjust fb down-sizing here */
 				texmode(1);
 
-				nsw=sw/downsample;
-				nsh=sh/downsample;
+				nsw=sw()/downsample;
+				nsh=sh()/downsample;
 
 				gen_texs(4,texs);
 				gen_rbs(3,rbs);
@@ -98,8 +98,8 @@ void init(void)
 
 void loop(void)
 {
-	const float spd1=30.0f*dt;
-	const float spd2=15.0f*dt;
+	const float spd1=30.0f*dt();
+	const float spd2=15.0f*dt();
 
 	float r=0.0f;
 	float dc=0.0f, ds=0.0f;
@@ -109,11 +109,11 @@ void loop(void)
 	use_basic();
 	send_lpview(pview);
 
-	if(mm || mw!=0.0f)
+	if(mm() || mw()!=0.0f)
 	{
-		if(mm)
+		if(mm())
 		{
-			dir+=mx*spd1;
+			dir+=mx()*spd1;
 			if(dir<-0.0f)
 			{
 				dir+=360.0f;
@@ -125,14 +125,14 @@ void loop(void)
 				ndir-=360.0f;
 			}
 
-			tilt-=my*spd1;
+			tilt-=my()*spd1;
 			if(tilt<0.001f) tilt=0.001f;
 			else if(tilt>100.0f) tilt=100.0f;
 		}
 
-		if(mw!=0.0f)
+		if(mw()!=0.0f)
 		{
-			zoom-=mw;
+			zoom-=mw();
 			if(zoom<7.0f) zoom=7.0f;
 			else if(zoom>12.0f) zoom=12.0f;
 		}

@@ -18,8 +18,6 @@ freely, subject to the following restrictions:
 
 #include "gl.h"
 
-#include <GLES2/gl2ext.h>
-
 const GLenum _clbit=(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 const GLenum _drawbufs[16]={ /* is this okay? */
 	GL_COLOR_ATTACHMENT0,

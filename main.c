@@ -22,8 +22,8 @@ freely, subject to the following restrictions:
 #include <stdio.h>
 
 #include <signal.h>
-#include "SDL.h"
-#include <GLES3/gl3.h>
+#include <SDL2/SDL.h>
+#include "glad.h"
 #include <time.h>
 
 int _sw=0, _sh=0;
@@ -39,7 +39,7 @@ byte running=1, active=1;
 
 void sigquit(int sig);
 
-int main(void)
+int SDL_main(int argc, char *argv[])
 {
 	SDL_Window *win=NULL;
 	SDL_GLContext context;
@@ -50,9 +50,9 @@ int main(void)
 	signal(SIGINT,sigquit);
 
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_ES);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_ES);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,3);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,24);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,8);
@@ -64,7 +64,7 @@ int main(void)
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
 	/* Place window at bottom-right of main screen. Suits my development environment/layout, can be changed as needed */
-	win=SDL_CreateWindow(TITLE,1920-SW,1080-SH,SW,SH,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
+	win=SDL_CreateWindow(TITLE,0,0,0,0,SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS|SDL_WINDOW_FULLSCREEN_DESKTOP|SDL_WINDOW_OPENGL);
 
 	/* Uncomment to capture the mouse on startup */
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -75,6 +75,8 @@ int main(void)
 		info("Vsync not supported\n");
 	SDL_GL_GetDrawableSize(win,&_sw,&_sh);
 	_asp=(float)_sw/(float)_sh;
+
+	gladLoadGL();
 
 	glViewport(0,0,_sw,_sh);
 	glScissor(0,0,_sw,_sh);
