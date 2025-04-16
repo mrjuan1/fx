@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -18,34 +18,25 @@ freely, subject to the following restrictions:
 
 #include "quad.h"
 
-byte _quad_init=0;
+byte _quad_init = 0;
 
-byte init_quad(void)
-{
-	if(!_quad_init && init_vbo())
-	{
-		const float vdata[20]={
-			-1.0f,-1.0f,0.0f,0.0f,0.0f,
-			 1.0f,-1.0f,0.0f,1.0f,0.0f,
-			 1.0f, 1.0f,0.0f,1.0f,1.0f,
-			-1.0f, 1.0f,0.0f,0.0f,1.0f
-		};
-		vbo_data t;
+byte init_quad(void) {
+  if (!_quad_init && init_vbo()) {
+    const float vdata[20] = {-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f,
+                             0.0f,  1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                             1.0f,  -1.0f, 1.0f, 0.0f, 0.0f, 1.0f};
+    vbo_data t;
 
-		add_to_vbo(&t,(const void*)vdata,20*sizeof(float));
-		_quad_init=1;
-	}
+    add_to_vbo(&t, (const void *)vdata, 20 * sizeof(float));
+    _quad_init = 1;
+  }
 
-	return _quad_init;
+  return _quad_init;
 }
 
-void done_quad(void)
-{
-	if(_quad_init)
-		_quad_init=0;
+void done_quad(void) {
+  if (_quad_init)
+    _quad_init = 0;
 }
 
-void quad(void)
-{
-	glDrawArrays(GL_TRIANGLE_FAN,0,4);
-}
+void quad(void) { glDrawArrays(GL_TRIANGLE_FAN, 0, 4); }

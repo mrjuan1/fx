@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -22,7 +22,7 @@ freely, subject to the following restrictions:
 #include "app.h"
 
 typedef struct {
-	int offset, count;
+  int offset, count;
 } vbo_data;
 
 #define stride() get_stride()

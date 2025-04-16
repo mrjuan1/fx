@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -16,32 +16,48 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution. */
 
+// The vignette shader
 #version 300 es
 
 precision mediump int;
 precision mediump float;
 
+// Input framebuffer size
 uniform vec2 size;
-uniform int vigmode;
 
+// Input colour (diffuse) framebuffer texture
 uniform sampler2D colmap;
 
+// Texture coords from vertex shader
 in vec2 vtc;
 
-layout(location=0) out vec4 oc;
+// Output colour texture
+layout(location = 0) out vec4 oc;
 
-void main(void)
-{
-	oc=texture(colmap,vtc);
+void main(void) {
+  // Set the output colour to the input colour
+  oc = texture(colmap, vtc);
 
-	const float offset=1.005f;
-	float r=texture(colmap,vec2((((vtc.x*2.0f)-1.0f)*offset*0.5f)+0.5f,vtc.y)).r;
-	if(oc.r!=r) oc.r=r;
-	float b=texture(colmap,vec2(vtc.x,(((vtc.y*2.0f)-1.0f)*offset*0.5f)+0.5f)).b;
-	if(oc.b!=b) oc.b=b;
+  // Apply the chromatic aberration effect (one I have come to dislike over the
+  // years)
+  const float offset = 1.005f;
+  float r =
+      texture(colmap,
+              vec2((((vtc.x * 2.0f) - 1.0f) * offset * 0.5f) + 0.5f, vtc.y))
+          .r;
+  if (oc.r != r)
+    oc.r = r;
+  float b =
+      texture(colmap,
+              vec2(vtc.x, (((vtc.y * 2.0f) - 1.0f) * offset * 0.5f) + 0.5f))
+          .b;
+  if (oc.b != b)
+    oc.b = b;
 
-	oc=pow(oc,vec4(1.5f))*1.5f; /* ----- */
+  // Apply some darkening
+  // oc = pow(oc, vec4(1.5f)) * 1.5f;
 
-	float vig=smoothstep(0.85f,0.85f-(0.85f/2.0f),length(vtc-0.5f));
-	oc.rgb*=vig;
+  // Calculate and apply the vignette effect
+  float vig = smoothstep(0.85f, 0.85f - (0.85f / 2.0f), length(vtc - 0.5f));
+  oc.rgb *= vig;
 }

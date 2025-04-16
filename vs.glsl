@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -16,26 +16,32 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution. */
 
+// The world-space vertex shader
 #version 300 es
 
 precision mediump int;
 precision mediump float;
 
+// Input view (camera) and last view matrices
 uniform mat4 pview, lpview;
 
-layout(location=0) in vec3 pos;
-layout(location=1) in vec2 tc;
+// Input vertex position and texture coord
+layout(location = 0) in vec3 pos;
+layout(location = 1) in vec2 tc;
 
+// Output texture coord for fragment shader
 out vec2 vtc;
+// Output view position and last view position for motion-blur shader
 out vec4 vpos, vlpos;
 
-void main(void)
-{
-	vec4 p=vec4(pos,1.0f);
+void main(void) {
+  // Set vertex position and texture coord
+  vec4 p = vec4(pos, 1.0f);
 
-	gl_Position=pview*p;
-	vtc=tc;
+  gl_Position = pview * p;
+  vtc = tc;
 
-	vpos=gl_Position;
-	vlpos=lpview*p;
+  // Set the view and last view positions
+  vpos = gl_Position;
+  vlpos = lpview * p;
 }

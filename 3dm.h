@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -20,15 +20,15 @@ freely, subject to the following restrictions:
 #define __3DM_H__
 
 #ifdef __STRICT_ANSI__
-	#include <stdlib.h>
-	#define __USE_MISC
+#include <stdlib.h>
 #endif /* __STRICT_ANSI__ */
 #include <math.h>
 #ifdef __STRICT_ANSI__
-	float tanf(float), cosf(float), sinf(float);
+float tanf(float), cosf(float), sinf(float);
 #endif /* __STRICT_ANSI__ */
 
-typedef float __attribute__((vector_size(4*sizeof(float)),aligned(sizeof(float)))) vec4;
+typedef float __attribute__((vector_size(4 * sizeof(float)),
+                             aligned(sizeof(float)))) vec4;
 typedef vec4 mat4[4];
 
 float d2r(float a);

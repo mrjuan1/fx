@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -16,18 +16,21 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution. */
 
+// The "square" vertext shader, just for outputting a quad to the screen to
+// render the final results to
 #version 300 es
 
 precision mediump int;
 precision mediump float;
 
-layout(location=0) in vec3 pos;
-layout(location=1) in vec2 tc;
+// Vertex pos and texture coord
+layout(location = 0) in vec3 pos;
+layout(location = 1) in vec2 tc;
 
 out vec2 vtc;
 
-void main(void)
-{
-	gl_Position=vec4(pos,1.0f);
-	vtc=tc;
+void main(void) {
+  // Set vertex position and pass texture coord to fragment shader
+  gl_Position = vec4(pos, 1.0f);
+  vtc = tc;
 }

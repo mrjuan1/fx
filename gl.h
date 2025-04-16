@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -23,11 +23,7 @@ freely, subject to the following restrictions:
 
 #include "glad.h"
 
-typedef enum {
-	tf_none,
-	tf_linear,
-	tf_mipmap
-} tex_filter;
+typedef enum { tf_none, tf_linear, tf_mipmap } tex_filter;
 
 #define clcol() glClear(GL_COLOR_BUFFER_BIT)
 #define cldep() glClear(GL_DEPTH_BUFFER_BIT)
@@ -40,9 +36,9 @@ typedef enum {
 #define del_rbs glDeleteRenderbuffers
 #define del_texs glDeleteTextures
 
-#define use_fb(f) glBindFramebuffer(GL_FRAMEBUFFER,f)
-#define use_rb(r) glBindRenderbuffer(GL_RENDERBUFFER,r)
-#define use_tex(t) glBindTexture(GL_TEXTURE_2D,t)
+#define use_fb(f) glBindFramebuffer(GL_FRAMEBUFFER, f)
+#define use_rb(r) glBindRenderbuffer(GL_RENDERBUFFER, r)
+#define use_tex(t) glBindTexture(GL_TEXTURE_2D, t)
 
 #define default_tex() glActiveTexture(GL_TEXTURE0)
 
@@ -51,13 +47,16 @@ void clear(void);
 
 byte load_pro(unint p, const char *vs_fname, const char *fs_fname);
 
-byte load_tex(unint t, const char *fname, unshort w, unshort h, GLenum fmt, tex_filter tf);
+byte load_tex(unint t, const char *fname, unshort w, unshort h, GLenum fmt,
+              tex_filter tf);
 byte load_tex_compressed(unint t, const char *fname, tex_filter tf);
 void filter_tex(tex_filter tf);
 void clamp_tex(byte on);
 
-void add_fb_rb(int attachment, unint r, unshort w, unshort h, GLenum fmt, int samples);
-void add_fb_tex(int attachment, unint t, unshort w, unshort h, GLint ifmt, tex_filter tf);
+void add_fb_rb(int attachment, unint r, unshort w, unshort h, GLenum fmt,
+               int samples);
+void add_fb_tex(int attachment, unint t, unshort w, unshort h, GLint ifmt,
+                tex_filter tf);
 
 void set_drawbufs(int count);
 void active_tex(GLenum texnum, unint t);

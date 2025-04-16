@@ -1,4 +1,4 @@
-# Copyright (c) 2016 youka \
+# Copyright (c) 2016 Juan Wolfaardt \
  \
 This software is provided 'as-is', without any express or implied \
 warranty. In no event will the authors be held liable for any damages \
@@ -18,13 +18,13 @@ freely, subject to the following restrictions: \
 
 SRCS := $(shell ls *.c)
 OBJS := $(SRCS:%.c=%.o)
-O := template
+O := fx
 
 CC := cc
 STRIP := strip
 
 CFLAGS := $(shell sdl2-config --cflags)
-CFLAGS += -nocpp -std=c89 -pedantic -Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes -Wold-style-definition -Werror
+# CFLAGS += -nocpp -std=c89 -pedantic -Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes -Wold-style-definition -Werror
 CFLAGS += -O3 -pipe -m64 -march=native -mtune=native -ftree-vectorize -ffast-math -funroll-loops
 CFLAGS += -DTITLE="\"FX\"" -DSW=1280 -DSH=720
 
@@ -34,19 +34,19 @@ all: run
 	@echo "Done."
 
 clean:
-	@for o in $(O) $(OBJS); do if [ -e $$o ]; then echo " CLEAN\t$$o"; rm $$o; fi; done
+	@for o in $(O) $(OBJS); do if [ -e $$o ]; then echo -e " CLEAN\t$$o"; rm $$o; fi; done
 	@echo "Cleaned."
 
 run: $(O)
-	@echo " RUN\t$<"
+	@echo -e " RUN\t$<"
 	@./$<
 
 $(O): $(OBJS)
-	@echo " LINK\t$@"
+	@echo -e " LINK\t$@"
 	@$(CC) $(OBJS) -o $@ $(LDFLAGS)
-	@echo " STRIP\t$@"
+	@echo -e " STRIP\t$@"
 	@$(STRIP) -s $@
 
 %.o: %.c $(shell ls *.h) Makefile
-	@echo " CC\t$@"
+	@echo -e " CC\t$@"
 	@$(CC) -c $< -o $@ $(CFLAGS)

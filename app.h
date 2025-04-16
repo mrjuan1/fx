@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 youka
+/* Copyright (c) 2016 Juan Wolfaardt
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -19,15 +19,15 @@ freely, subject to the following restrictions:
 #ifndef __APP_H__
 #define __APP_H__
 
-#include "main.h"
-#include "gl.h"
 #include "3dm.h"
+#include "gl.h"
+#include "main.h"
 
 #include "basic.h"
 #include "mblur.h"
 #include "vig.h"
 
-#include "vbo.h"
 #include "quad.h"
+#include "vbo.h"
 
 #endif /* __APP_H__ */
